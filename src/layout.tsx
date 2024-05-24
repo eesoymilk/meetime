@@ -8,7 +8,9 @@ const Layout: ParentComponent = (props) => (
   <MetaProvider>
     <Title>SolidStart - Basic</Title>
     <Header />
-    <Suspense>{props.children}</Suspense>
+    <Suspense>
+      <main class="bg-slate-100 h-svh">{props.children}</main>
+    </Suspense>
   </MetaProvider>
 );
 

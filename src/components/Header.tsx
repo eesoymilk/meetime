@@ -1,44 +1,26 @@
-import { Icon } from "@iconify-icon/solid";
-import { A, useLocation } from "@solidjs/router";
-import { createMemo, For } from "solid-js";
+import type { Component } from "solid-js";
+import NavItem from "./NavItem";
 
-const navItems = [{ name: "About", href: "/about" }];
-
-const Header = () => {
-  const location = useLocation();
-  const pathname = createMemo(() => location.pathname);
-
-  return (
-    <header class="bg-slate-100">
-      <div class="h-full flex max-w-5xl mx-auto gap-2 justify-center items-center">
-        <A href="/">
-          <h1 class="font-cursive text-3xl flex gap-2 items-center">
-            <Icon
-              icon="fluent:calendar-edit-20-regular"
-              class="text-sky-500 text-3xl"
-            />
-            <span>
-              Mee<span class="text-sky-500">time</span>
-            </span>
-          </h1>
-        </A>
-        <nav>
-          <ul class="flex items-center text-lg">
-            <For each={navItems}>
-              {(item) => (
-                <li
-                  class="p-3"
-                  classList={{ "bg-sky-300": pathname() === item.href }}
-                >
-                  <A href={item.href}>{item.name}</A>
-                </li>
-              )}
-            </For>
-          </ul>
-        </nav>
-      </div>
-    </header>
-  );
-};
+const Header: Component = () => (
+  <header class="bg-slate-200">
+    <nav class="h-full max-w-5xl mx-auto">
+      <ul class="flex items-center justify-between text-lg gap-2">
+        <li>
+          <NavItem href="/" icon="fluent:calendar-edit-20-regular">
+            <h1 class="font-cursive text-3xl p-2">
+              Mee
+              <span class="text-sky-500 group-hover:text-sky-700 transition-colors duration-200">
+                time
+              </span>
+            </h1>
+          </NavItem>
+        </li>
+        <li>
+          <NavItem href="/about" icon="fluent:info-20-regular" />
+        </li>
+      </ul>
+    </nav>
+  </header>
+);
 
 export default Header;

@@ -1,6 +1,6 @@
 import { Title } from "@solidjs/meta";
-import SwitchButton from "~/components/Switch";
 import type { Component } from "solid-js";
+import Calendar from "~/components/Calendar";
 
 const Home: Component = () => {
   return (
@@ -10,7 +10,7 @@ const Home: Component = () => {
       <div class="flex flex-col md:flex-row justify-center items-center">
         <div>
           <h3 class="text-xl font-semibold">Dates</h3>
-          <SwitchButton switchItems={["Specific Dates", "Days of the Week"]} />
+          <Calendar />
         </div>
         <div>
           <h3 class="text-xl font-semibold">Times</h3>
