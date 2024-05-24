@@ -1,12 +1,13 @@
-import { Component, createMemo, For } from "solid-js";
+import { Component, createMemo, createSignal, For } from "solid-js";
 
 const Calendar: Component = () => {
-  const calenderCells = createMemo(() =>
+  const [selectedYear, setSelectedYear] = createSignal(
+    new Date().getFullYear()
+  );
+  const calenderCells = createMemo((): (Date | null)[][] =>
     Array.from({ length: 12 }, (_, monthIndex) => {
-      const now = new Date();
-      const currentYear = now.getFullYear();
-      const daysInMonth = new Date(currentYear, monthIndex + 1, 0).getDate();
-      const topOffset = new Date(currentYear, monthIndex, 1).getDay();
+      const daysInMonth = new Date(selectedYear(), monthIndex + 1, 0).getDate();
+      const topOffset = new Date(selectedYear(), monthIndex, 1).getDay();
       const numberOfCells = Math.ceil((daysInMonth + topOffset) / 7) * 7;
       const bottomOffset = numberOfCells - (daysInMonth + topOffset);
 
@@ -14,7 +15,7 @@ const Calendar: Component = () => {
         ...Array(topOffset).fill(null),
         ...Array.from(
           { length: daysInMonth },
-          (_, dayIndex) => new Date(currentYear, monthIndex, dayIndex + 1)
+          (_, dayIndex) => new Date(selectedYear(), monthIndex, dayIndex + 1)
         ),
         ...Array(bottomOffset).fill(null),
       ];
