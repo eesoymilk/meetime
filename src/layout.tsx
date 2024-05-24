@@ -7,10 +7,12 @@ import type { ParentComponent } from "solid-js";
 const Layout: ParentComponent = (props) => (
   <MetaProvider>
     <Title>SolidStart - Basic</Title>
-    <Header />
-    <Suspense>
-      <main class="bg-slate-100 h-svh">{props.children}</main>
-    </Suspense>
+    <div class="overflow-y-scroll">
+      <Header />
+      <Suspense>
+        <main class="bg-slate-100 min-h-svh">{props.children}</main>
+      </Suspense>
+    </div>
   </MetaProvider>
 );
 

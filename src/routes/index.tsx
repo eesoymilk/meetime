@@ -12,9 +12,9 @@ const Home: Component = () => {
           <h3 class="text-xl font-semibold">Dates</h3>
           <Calendar />
         </div>
-        <div>
+        {/* <div>
           <h3 class="text-xl font-semibold">Times</h3>
-        </div>
+        </div> */}
       </div>
     </main>
   );
