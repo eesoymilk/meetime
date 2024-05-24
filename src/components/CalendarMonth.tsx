@@ -22,21 +22,18 @@ const isToday = (date: Date): boolean => {
   );
 };
 
-const isWeekend = (date: Date): boolean => {
-  return date.getDay() === 0 || date.getDay() === 6;
-};
+const isWeekend = (date: Date): boolean =>
+  date.getDay() === 0 || date.getDay() === 6;
 
 const isCurrentMonth = (date: Date, currentMonth: number): boolean =>
   date.getMonth() === currentMonth;
 
-const getCell = (date: Date, currentMonth: number): Cell => {
-  return {
-    date,
-    isToday: isToday(date),
-    isWeekend: isWeekend(date),
-    isCurrentMonth: isCurrentMonth(date, currentMonth),
-  };
-};
+const getCell = (date: Date, currentMonth: number): Cell => ({
+  date,
+  isToday: isToday(date),
+  isWeekend: isWeekend(date),
+  isCurrentMonth: isCurrentMonth(date, currentMonth),
+});
 
 const CalendarMonth: Component<CalendarMonthProps> = (props) => {
   const cells = createMemo((): Cell[] => {
