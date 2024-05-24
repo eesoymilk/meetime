@@ -6,7 +6,7 @@ const Calendar: Component = () => {
       const now = new Date();
       const currentYear = now.getFullYear();
       const daysInMonth = new Date(currentYear, monthIndex + 1, 0).getDate();
-      const topOffset = (new Date(currentYear, monthIndex, 1).getDay() + 6) % 7;
+      const topOffset = new Date(currentYear, monthIndex, 1).getDay();
       const numberOfCells = Math.ceil((daysInMonth + topOffset) / 7) * 7;
       const bottomOffset = numberOfCells - (daysInMonth + topOffset);
 
