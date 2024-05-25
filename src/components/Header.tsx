@@ -8,7 +8,9 @@ const Header: Component = () => (
         <li>
           <NavItem href="/" icon="fluent:calendar-edit-20-regular">
             <h1 class="font-cursive text-3xl p-2">
-              Mee
+              <span class="text-black group-hover:text-slate-800 transition-colors duration-200">
+                Mee
+              </span>
               <span class="text-sky-500 group-hover:text-sky-700 transition-colors duration-200">
                 time
               </span>

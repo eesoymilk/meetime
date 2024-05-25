@@ -1,11 +1,5 @@
 import { type Component, createMemo, Index } from "solid-js";
-
-interface Cell {
-  date: Date;
-  isToday: boolean;
-  isWeekend: boolean;
-  isCurrentMonth: boolean;
-}
+import CalendarCell from "./CalendarCell";
 
 interface CalendarMonthProps {
   year: number;
@@ -13,60 +7,23 @@ interface CalendarMonthProps {
   translateXPercent: number;
 }
 
-const isToday = (date: Date): boolean => {
-  const now = new Date();
-  return (
-    date.getDate() === now.getDate() &&
-    date.getMonth() === now.getMonth() &&
-    date.getFullYear() === now.getFullYear()
-  );
-};
-
-const isWeekend = (date: Date): boolean =>
-  date.getDay() === 0 || date.getDay() === 6;
-
-const isCurrentMonth = (date: Date, currentMonth: number): boolean =>
-  date.getMonth() === currentMonth;
-
-const getCell = (date: Date, currentMonth: number): Cell => ({
-  date,
-  isToday: isToday(date),
-  isWeekend: isWeekend(date),
-  isCurrentMonth: isCurrentMonth(date, currentMonth),
-});
-
 const CalendarMonth: Component<CalendarMonthProps> = (props) => {
-  const cells = createMemo((): Cell[] => {
+  const cells = createMemo((): Date[] => {
     const daysInMonth = new Date(props.year, props.month + 1, 0).getDate();
     let topOffset = new Date(props.year, props.month, 1).getDay();
-    let numberOfCells = Math.ceil((daysInMonth + topOffset) / 7) * 7;
-    let bottomOffset = numberOfCells - (daysInMonth + topOffset);
 
+    const numberOfCells = Math.ceil((daysInMonth + topOffset) / 7) * 7;
     if (numberOfCells < 42) {
-      if (topOffset > bottomOffset) {
+      const bottomOffset = numberOfCells - (daysInMonth + topOffset);
+      if (topOffset < bottomOffset) {
         topOffset += 7;
-      } else {
-        bottomOffset += 7;
       }
     }
 
-    return [
-      ...Array.from({ length: topOffset }, (_, dayIndex) =>
-        getCell(
-          new Date(props.year, props.month, -(topOffset - dayIndex - 1)),
-          props.month
-        )
-      ),
-      ...Array.from({ length: daysInMonth }, (_, dayIndex) =>
-        getCell(new Date(props.year, props.month, dayIndex + 1), props.month)
-      ),
-      ...Array.from({ length: bottomOffset }, (_, dayIndex) =>
-        getCell(
-          new Date(props.year, props.month + 1, dayIndex + 1),
-          props.month
-        )
-      ),
-    ];
+    return Array.from(
+      { length: 42 },
+      (_, i) => new Date(props.year, props.month, i - topOffset + 1)
+    );
   });
 
   return (
@@ -86,17 +43,7 @@ const CalendarMonth: Component<CalendarMonthProps> = (props) => {
         </Index>
         <Index each={cells()}>
           {(cell, _) => (
-            <div
-              class="px-2 m-1 rounded-md text-center"
-              classList={{
-                "bg-green-200 text-green-700": cell().isToday,
-                "bg-slate-200": cell().isCurrentMonth,
-                "bg-slate-300 text-slate-500":
-                  !cell().isCurrentMonth && !cell().isToday,
-              }}
-            >
-              {cell().date.getDate()}
-            </div>
+            <CalendarCell date={cell()} currentMonth={props.month} />
           )}
         </Index>
       </div>
