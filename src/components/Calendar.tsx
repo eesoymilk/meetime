@@ -1,8 +1,5 @@
-import { clientOnly } from "@solidjs/start";
 import { type Component, Index } from "solid-js";
 import CalendarMonth from "./CalendarMonth";
-
-// const CalendarMonth = clientOnly(() => import("~/components/CalendarMonth"));
 
 interface CalendarProps {
   selectedYear: number;

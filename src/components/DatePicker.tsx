@@ -4,6 +4,8 @@ import Calendar from "./Calendar";
 import { useDatePickerContext } from "~/contexts/datePicker";
 
 const DatePicker: Component = () => {
+  const [_, { setStartDate }] = useDatePickerContext();
+
   const [selectedYear, setSelectedYear] = createSignal(0);
   const [selectedMonth, setSelectedMonth] = createSignal(0);
 
@@ -27,6 +29,10 @@ const DatePicker: Component = () => {
     });
   };
 
+  const handleMouseLeave = () => {
+    setStartDate(null);
+  };
+
   onMount(() => {
     const now = new Date();
     setSelectedYear(now.getFullYear());
@@ -34,7 +40,10 @@ const DatePicker: Component = () => {
   });
 
   return (
-    <div class="flex flex-col items-center justify-center">
+    <div
+      onMouseLeave={handleMouseLeave}
+      class="flex flex-col items-center justify-center"
+    >
       <h3 class="text-xl font-semibold">Dates</h3>
       <div class="flex gap-2">
         <button class="group" onclick={decrementMonth}>

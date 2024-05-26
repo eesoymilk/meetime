@@ -46,9 +46,9 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
     return picked.some((date) => date.getTime() === props.date.getTime());
   };
 
-  const handleMouseOver = () => setHoveredDate(props.date);
+  const handleMouseEnter = () => setHoveredDate(props.date);
 
-  const handleMouseOut = () => setHoveredDate(null);
+  const handleMouseLeave = () => setHoveredDate(null);
 
   const handleMouseDown = () => setStartDate(props.date);
 
@@ -75,11 +75,11 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
 
   return (
     <div
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onmousedown={handleMouseDown}
       onmouseup={handleMouseUp}
-      class="px-2 m-1 rounded-md text-center"
+      class="m-1 rounded-md text-center"
       classList={{
         "bg-green-200 text-green-700": isPicking(),
         "bg-slate-200": !isPicking() && isCurrentMonth(),

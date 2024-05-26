@@ -1,6 +1,7 @@
 import type { Component } from "solid-js";
 import DatePicker from "./DatePicker";
 import DatePickerProvider from "./DatePickerProvider";
+import { useDatePickerContext } from "~/contexts/datePicker";
 
 const NewEvent: Component = () => {
   return (
