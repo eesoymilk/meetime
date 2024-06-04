@@ -11,7 +11,8 @@ interface CalendarCellProps {
 const CalendarCell: Component<CalendarCellProps> = (props) => {
   const [
     { startDate, hoveredDate, pickedDates },
-    { setStartDate, setHoveredDate, setPickedDates },
+    { setStartDate, setHoveredDate },
+    { selectDates },
   ] = useDatePickerContext();
 
   const isToday = () => {
@@ -31,6 +32,7 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
   const isPicking = () => {
     const start = startDate();
     const hovered = hoveredDate();
+
     if (start === null || hovered === null) return false;
 
     return (
@@ -47,51 +49,6 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
 
     return picked.some((date) => date.getTime() === props.date.getTime());
   };
-
-  const handleMouseEnter = () => setHoveredDate(props.date);
-
-  const handleMouseLeave = () => setHoveredDate(null);
-
-  const handleMouseDown = () => setStartDate(props.date);
-
-  const handleMouseUp = () => {
-    const start = startDate();
-
-    if (start === null) {
-      console.log("start date is null");
-      return;
-    }
-
-    const days =
-      Math.abs(
-        (start.getTime() - props.date.getTime()) / (1000 * 60 * 60 * 24)
-      ) + 1;
-
-    setStartDate(null);
-    setPickedDates((prev) => [
-      ...prev,
-      ...Array.from({ length: days }, (_, i) => {
-        const date = new Date(start);
-        date.setDate(start.getDate() + i);
-        return date;
-      }),
-    ]);
-
-    console.log(
-      "pickedDates",
-      pickedDates().map((date) => date.toDateString())
-    );
-  };
-
-  /* Cell's color explained:
-  picked: dark green bg, white text
-  picking: green bg
-
-  today: green bg, bold text
-  weekend: orange bg
-  current month: slate bg
-  other month: light slate bg
-  */
 
   const classList = () => {
     const classes: ClassValue[] = [
@@ -113,10 +70,12 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
     }
 
     // bg
-    if (picked) {
-      classes.push("bg-green-700");
-    } else if (picking) {
+    if (picking && !picked) {
       classes.push("bg-green-200");
+    } else if (picking && picked) {
+      classes.push("bg-green-400");
+    } else if (picked) {
+      classes.push("bg-green-700");
     } else if (!currentMonth) {
       classes.push("bg-slate-300");
     } else if (weekend) {
@@ -134,6 +93,11 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
 
     return classes;
   };
+
+  const handleMouseEnter = () => setHoveredDate(props.date);
+  const handleMouseLeave = () => setHoveredDate(null);
+  const handleMouseDown = () => setStartDate(props.date);
+  const handleMouseUp = () => selectDates(props.date);
 
   return (
     <div
