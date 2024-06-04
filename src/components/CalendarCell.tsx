@@ -1,5 +1,7 @@
+import type { ClassValue } from "clsx";
 import type { Component } from "solid-js";
 import { useDatePickerContext } from "~/contexts/datePicker";
+import { cn } from "~/utils/cn";
 
 interface CalendarCellProps {
   date: Date;
@@ -81,18 +83,65 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
     );
   };
 
+  /* Cell's color explained:
+  picked: dark green bg, white text
+  picking: green bg
+
+  today: green bg, bold text
+  weekend: orange bg
+  current month: slate bg
+  other month: light slate bg
+  */
+
+  const classList = () => {
+    const classes: ClassValue[] = [
+        "m-1",
+        "rounded-md",
+        "text-center",
+        "cursor-pointer",
+        "select-none",
+      ],
+      today = isToday(),
+      weekend = isWeekend(),
+      picked = isPicked(),
+      picking = isPicking(),
+      currentMonth = isCurrentMonth();
+
+    // font
+    if (today) {
+      classes.push("font-semibold");
+    }
+
+    // bg
+    if (picked) {
+      classes.push("bg-green-700");
+    } else if (picking) {
+      classes.push("bg-green-200");
+    } else if (!currentMonth) {
+      classes.push("bg-slate-300");
+    } else if (weekend) {
+      classes.push("bg-orange-200");
+    } else {
+      classes.push("bg-slate-200");
+    }
+
+    // text
+    if (picked) {
+      classes.push("text-white");
+    } else if (!currentMonth) {
+      classes.push("text-slate-500");
+    }
+
+    return classes;
+  };
+
   return (
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onmousedown={handleMouseDown}
       onmouseup={handleMouseUp}
-      class="m-1 rounded-md text-center select-none cursor-pointer"
-      classList={{
-        "bg-green-200 text-green-700": isPicking(),
-        "bg-slate-200": !isPicking() && isCurrentMonth(),
-        "bg-slate-300 text-slate-500": !isCurrentMonth() && !isPicking(),
-      }}
+      class={cn(classList())}
     >
       {props.date.getDate()}
     </div>
