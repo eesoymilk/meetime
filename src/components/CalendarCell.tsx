@@ -8,8 +8,8 @@ interface CalendarCellProps {
 
 const CalendarCell: Component<CalendarCellProps> = (props) => {
   const [
-    { startDate, hoveredDate, endDate, pickedDates },
-    { setStartDate, setHoveredDate, setEndDate, setPickedDates },
+    { startDate, hoveredDate, pickedDates },
+    { setStartDate, setHoveredDate, setPickedDates },
   ] = useDatePickerContext();
 
   const isToday = () => {
@@ -55,22 +55,17 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
   const handleMouseUp = () => {
     const start = startDate();
 
-    if (start === null) return;
-
-    if (props.date === start) {
-      console.log("clicked on the same date");
-      setStartDate(null);
+    if (start === null) {
+      console.log("start date is null");
       return;
     }
 
-    setEndDate(props.date);
-
-    const end = endDate();
-    if (!end) return;
-
     const days =
-      Math.abs((start.getTime() - end.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+      Math.abs(
+        (start.getTime() - props.date.getTime()) / (1000 * 60 * 60 * 24)
+      ) + 1;
 
+    setStartDate(null);
     setPickedDates((prev) => [
       ...prev,
       ...Array.from({ length: days }, (_, i) => {
@@ -84,9 +79,6 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
       "pickedDates",
       pickedDates().map((date) => date.toDateString())
     );
-
-    setStartDate(null);
-    setEndDate(null);
   };
 
   return (

@@ -3,11 +3,10 @@ import { createContext, createSignal, useContext } from "solid-js";
 export const makeDatePickerContext = () => {
   const [startDate, setStartDate] = createSignal<Date | null>(null);
   const [hoveredDate, setHoveredDate] = createSignal<Date | null>(null);
-  const [endDate, setEndDate] = createSignal<Date | null>(null);
   const [pickedDates, setPickedDates] = createSignal<Date[]>([]);
   return [
-    { startDate, hoveredDate, endDate, pickedDates },
-    { setStartDate, setHoveredDate, setEndDate, setPickedDates },
+    { startDate, hoveredDate, pickedDates },
+    { setStartDate, setHoveredDate, setPickedDates },
   ] as const;
 };
 
