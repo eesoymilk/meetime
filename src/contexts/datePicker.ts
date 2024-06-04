@@ -19,15 +19,11 @@ export const makeDatePickerContext = () => {
     }
 
     let [d1, d2] = [start, refDate];
-    let [t1, t2] = [start.getTime(), refDate.getTime()];
-    if (t1 > t2) {
-      [d1, d2] = [d2, d1];
-      [t1, t2] = [t2, t1];
-    }
+    if (d1.getTime() > d2.getTime()) [d1, d2] = [d2, d1];
 
-    const days = Math.abs((t2 - t1) / msInDay) + 1;
+    const days = Math.abs((d2.getTime() - d1.getTime()) / msInDay) + 1;
     const dates = Array.from({ length: days }, (_, i) => {
-      const date = new Date(t1);
+      const date = new Date(d1.getTime());
       date.setDate(d1.getDate() + i);
       return date;
     });
