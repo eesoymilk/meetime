@@ -24,10 +24,13 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
     );
   };
 
-  const isWeekend = () =>
-    props.date.getDay() === 0 || props.date.getDay() === 6;
+  const isWeekend = () => {
+    return props.date.getDay() === 0 || props.date.getDay() === 6;
+  };
 
-  const isCurrentMonth = () => props.date.getMonth() === props.currentMonth;
+  const isCurrentMonth = () => {
+    return props.date.getMonth() === props.currentMonth;
+  };
 
   const isPicking = () => {
     const start = startDate();
@@ -64,12 +67,12 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
       picking = isPicking(),
       currentMonth = isCurrentMonth();
 
-    // font
+    // font weight
     if (today) {
       classes.push("font-semibold");
     }
 
-    // bg
+    // background color
     if (picking && !picked) {
       classes.push("bg-green-200");
     } else if (picking && picked) {
@@ -84,7 +87,7 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
       classes.push("bg-slate-200");
     }
 
-    // text
+    // text color
     if (picked) {
       classes.push("text-white");
     } else if (!currentMonth) {
