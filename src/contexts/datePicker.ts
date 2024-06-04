@@ -39,8 +39,8 @@ export const makeDatePickerContext = () => {
   };
 
   return [
-    { startDate, hoveredDate, pickedTimes, pickedDates },
-    { setStartDate, setHoveredDate, setPickedTimes },
+    { startDate, hoveredDate, pickedDates },
+    { setStartDate, setHoveredDate },
     { selectDates },
   ] as const;
 };
