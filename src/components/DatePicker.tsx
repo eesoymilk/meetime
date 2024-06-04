@@ -1,6 +1,7 @@
 import { createSignal, onMount, type Component } from "solid-js";
 import { Icon } from "@iconify-icon/solid";
-import Calendar from "./Calendar";
+import Calendar from "~/components/Calendar";
+import Clock from "~/components/Clock";
 import { useDatePickerContext } from "~/contexts/datePicker";
 
 const DatePicker: Component = () => {
@@ -62,6 +63,7 @@ const DatePicker: Component = () => {
         </button>
       </div>
       <Calendar selectedYear={selectedYear()} selectedMonth={selectedMonth()} />
+      {/* <Clock /> */}
     </div>
   );
 };
