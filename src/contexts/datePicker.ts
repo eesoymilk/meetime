@@ -30,10 +30,9 @@ export const makeDatePickerContext = () => {
 
     setStartDate(null);
     setPickedTimes((prev) => {
-      const startTime = start.getTime();
       const times = dates.map((date) => date.getTime());
 
-      return prev.includes(startTime)
+      return prev.includes(start.getTime())
         ? prev.filter((time) => !times.includes(time))
         : Array.from(new Set([...prev, ...times])).sort();
     });
