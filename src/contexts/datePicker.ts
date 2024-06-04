@@ -18,24 +18,28 @@ export const makeDatePickerContext = () => {
       return;
     }
 
-    if (start.getTime() > refDate.getTime()) {
-      [start, refDate] = [refDate, start];
+    let [d1, d2] = [start, refDate];
+    let [t1, t2] = [start.getTime(), refDate.getTime()];
+    if (t1 > t2) {
+      [d1, d2] = [d2, d1];
+      [t1, t2] = [t2, t1];
     }
 
-    const days = Math.abs((start.getTime() - refDate.getTime()) / msInDay) + 1;
+    const days = Math.abs((t2 - t1) / msInDay) + 1;
+    const dates = Array.from({ length: days }, (_, i) => {
+      const date = new Date(t1);
+      date.setDate(d1.getDate() + i);
+      return date;
+    });
 
     setStartDate(null);
     setPickedTimes((prev) => {
       const startTime = start.getTime();
-      const dateTimes = Array.from({ length: days }, (_, i) => {
-        const date = new Date(start);
-        date.setDate(start.getDate() + i);
-        return date.getTime();
-      });
+      const times = dates.map((date) => date.getTime());
 
       return prev.includes(startTime)
-        ? prev.filter((time) => !dateTimes.includes(time))
-        : Array.from(new Set([...prev, ...dateTimes])).sort();
+        ? prev.filter((time) => !times.includes(time))
+        : Array.from(new Set([...prev, ...times])).sort();
     });
   };
 
