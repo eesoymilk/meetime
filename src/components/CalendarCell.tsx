@@ -53,24 +53,40 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
   const handleMouseDown = () => setStartDate(props.date);
 
   const handleMouseUp = () => {
-    if (startDate() === null) return;
+    const start = startDate();
+
+    if (start === null) return;
+
+    if (props.date === start) {
+      console.log("clicked on the same date");
+      setStartDate(null);
+      return;
+    }
 
     setEndDate(props.date);
 
-    const start = startDate();
     const end = endDate();
-    if (!start || !end) return;
+    if (!end) return;
 
     const days =
       Math.abs((start.getTime() - end.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
-    setPickedDates(
-      Array.from({ length: days }, (_, i) => {
+    setPickedDates((prev) => [
+      ...prev,
+      ...Array.from({ length: days }, (_, i) => {
         const date = new Date(start);
         date.setDate(start.getDate() + i);
         return date;
-      })
+      }),
+    ]);
+
+    console.log(
+      "pickedDates",
+      pickedDates().map((date) => date.toDateString())
     );
+
+    setStartDate(null);
+    setEndDate(null);
   };
 
   return (
@@ -79,7 +95,7 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
       onMouseLeave={handleMouseLeave}
       onmousedown={handleMouseDown}
       onmouseup={handleMouseUp}
-      class="m-1 rounded-md text-center"
+      class="m-1 rounded-md text-center select-none cursor-pointer"
       classList={{
         "bg-green-200 text-green-700": isPicking(),
         "bg-slate-200": !isPicking() && isCurrentMonth(),
