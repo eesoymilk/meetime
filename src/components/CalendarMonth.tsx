@@ -1,16 +1,26 @@
-import { type Component, createMemo, Index } from "solid-js";
+import { type Component, createMemo, Index, mergeProps } from "solid-js";
 import CalendarCell from "./CalendarCell";
 
 interface CalendarMonthProps {
   year: number;
   month: number;
+  weekStartsOn?: number;
   translateXPercent: number;
 }
 
-const CalendarMonth: Component<CalendarMonthProps> = (props) => {
+const CalendarMonth: Component<CalendarMonthProps> = (props_) => {
+  const props = mergeProps({ weekStartsOn: 1 }, props_);
+
+  const dayNamesShifted = () => {
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const shifted = dayNames.slice(props.weekStartsOn);
+    return shifted.concat(dayNames.slice(0, props.weekStartsOn));
+  };
+
   const cells = createMemo((): Date[] => {
     const daysInMonth = new Date(props.year, props.month + 1, 0).getDate();
-    let topOffset = new Date(props.year, props.month, 1).getDay();
+    let topOffset =
+      new Date(props.year, props.month, 1).getDay() - props.weekStartsOn;
 
     const numberOfCells = Math.ceil((daysInMonth + topOffset) / 7) * 7;
     if (numberOfCells < 42) {
@@ -38,7 +48,7 @@ const CalendarMonth: Component<CalendarMonthProps> = (props) => {
         })}
       </div>
       <div class="grid grid-cols-7">
-        <Index each={["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]}>
+        <Index each={dayNamesShifted()}>
           {(day, _) => <div class="text-center font-semibold">{day()}</div>}
         </Index>
         <Index each={cells()}>
