@@ -63,7 +63,7 @@ const DatePicker: Component = () => {
         </button>
       </div>
       <Calendar selectedYear={selectedYear()} selectedMonth={selectedMonth()} />
-      {/* <Clock /> */}
+      <Clock />
     </div>
   );
 };
