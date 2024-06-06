@@ -106,8 +106,8 @@ const CalendarCell: Component<CalendarCellProps> = (props) => {
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onmousedown={handleMouseDown}
-      onmouseup={handleMouseUp}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       class={cn(classList())}
     >
       {props.date.getDate()}

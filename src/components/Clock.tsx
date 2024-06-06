@@ -1,10 +1,6 @@
-import type { ClassValue } from "clsx";
 import { Index, mergeProps, type Component } from "solid-js";
-import { useDatePickerContext } from "~/contexts/datePicker";
-import { cn } from "~/utils/cn";
 import ClockSector from "./ClockSector";
-
-interface ClockRange {}
+import { SectorAngle } from "~/constants/clock";
 
 interface ClockProps {
   startHour?: number;
@@ -14,17 +10,12 @@ interface ClockProps {
   radiusUnit?: string;
 }
 
-const defaultClockRange: ClockRange = {
-  startHour: 0,
-  endHour: 24,
-};
-
 const Clock: Component<ClockProps> = (props_) => {
   const props = mergeProps(
     {
       startHour: 0,
       endHour: 24,
-      step: 8,
+      step: 1,
       radiusValue: 6,
       radiusUnit: "rem",
     },
@@ -35,33 +26,25 @@ const Clock: Component<ClockProps> = (props_) => {
 
   const diameter = () => `${2 * props.radiusValue}${props.radiusUnit}`;
 
-  const numberOfDivisions = () => {
-    const result = (props.endHour - props.startHour) / props.step;
-    if (result % 1 !== 0) {
-      throw new Error("Invalid range");
-    }
-    return result;
-  };
-
-  const sectorAngle = () => {
-    return (1 / numberOfDivisions()) * 2 * Math.PI;
-  };
-
   return (
-    <div class="flex gap-2 relative">
-      <div>{numberOfDivisions()}</div>
-      <Index each={Array(numberOfDivisions()).fill(null)}>
-        {(_, index) => {
-          const hour = props.startHour + index * props.step;
-          return (
-            <div
-              style={{ transform: `rotate(${index * sectorAngle()}rad)` }}
-              class="absolute origin-bottom-left"
-            >
-              <ClockSector angle={sectorAngle()} />
-            </div>
-          );
-        }}
+    <div style={{ height: diameter(), width: diameter() }} class="relative">
+      <Index each={Array(24).fill(null)}>
+        {(_, hour) => (
+          <div
+            style={{
+              width: radius(),
+              height: radius(),
+              transform: `rotate(${hour * SectorAngle}rad)`,
+            }}
+            class="absolute m-auto top-0 right-0 pointer-events-none origin-bottom-left"
+          >
+            <ClockSector
+              svgSizeValue={props.radiusValue}
+              svgSizeUnit={props.radiusUnit}
+              hour={hour}
+            />
+          </div>
+        )}
       </Index>
     </div>
   );
